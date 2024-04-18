@@ -1,2 +1,2 @@
-# filament_laravel
+# filament-employees
 employee-laravel9-filament
