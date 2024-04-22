@@ -11,5 +11,28 @@ employee-laravel9-filament
     php artisan migrate
 4. Install Filament
     composer require filament/filament
-    php artisan make:filament-user
+    php artisan make:filament-user (lalu isi username dan password)
+    - to change many times attemp login, change in this code 
+    public function ensureIsNotRateLimited(): void
+    {
+        // 5 is default many times attemp login
+        //if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+          if (! RateLimiter::tooManyAttempts($this->throttleKey(), 3)) {
+            return;
+        }
+
+        event(new Lockout($this));
+
+        $seconds = RateLimiter::availableIn($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.throttle', [
+                'seconds' => $seconds,
+                'minutes' => ceil($seconds / 60),
+            ]),
+        ]);
+    }
+
+5. Create model
+    php artisan make:model Country (State, City, Department, Employee)
     
